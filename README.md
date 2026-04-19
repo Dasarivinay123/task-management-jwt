@@ -11,8 +11,6 @@ Secure backend application built using Spring Boot with JWT Authentication and d
 - Jenkins (CI/CD)
 - AWS EC2
 
-<img width="1746" height="646" alt="Screenshot 2026-04-18 233832" src="https://github.com/user-attachments/assets/168fdb0d-260d-411c-aca6-5bb7b0572ea0" />
-
 ## 🔐 Features
 - User Registration & Login
 - JWT Authentication & Authorization
