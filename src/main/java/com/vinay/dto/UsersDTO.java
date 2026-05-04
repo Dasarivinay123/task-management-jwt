@@ -1,8 +1,5 @@
 package com.vinay.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-
 public class UsersDTO {
 
 	private long Id;

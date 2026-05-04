@@ -81,18 +81,65 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public void deleteTask(long userId, long taskid) {
+	public void deleteTask(long userId, long taskId) {
+
+	    String email = SecurityContextHolder
+	            .getContext()
+	            .getAuthentication()
+	            .getName();
+
+	    Users user = userRepository.findByEmail(email)
+	            .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+	    Task task = taskRepository.findById(taskId)
+	            .orElseThrow(() -> new TaskNotFoundException(
+	                    String.format("Task Id %d not found", taskId)));
+
+	    if (!task.getUsers().getId().equals(user.getId())) {
+	        throw new APIException("Unauthorized access");
+	    }
+
+	    taskRepository.delete(task);
+	}
+
+	@Override
+	public TaskDTO updateTask(long userId, long taskId, TaskDTO taskDTO) {
+
+
 		
-		Users users = userRepository.findById(userId)
-				.orElseThrow(() -> new UserNotFoundException(String.format("User Id %d not found", userId)));
-		Task tasks = taskRepository.findById(taskid)
-		.orElseThrow(() -> new TaskNotFoundException(String.format("Task Id %d not found", taskid)));
 		
-		if(users.getId() != tasks.getUsers().getId()) {
-			throw new APIException(String.format("Task Id %d not belongs to User Id %d",taskid, userId));
-		}
-		taskRepository.deleteById(taskid);;
+	    //Get logged-in user from JWT (BEST PRACTICE)
+	    String email = SecurityContextHolder
+	            .getContext()
+	            .getAuthentication()
+	            .getName();
+		System.out.println("JWT USER EMAIL: " + email);
 		
+	    Users user = userRepository.findByEmail(email)
+	            .orElseThrow(() -> new UserNotFoundException("User not found"));
+	    
+	    System.out.println("REQUEST USER ID: " + userId + "Autherized uderId: "+user.getId());
+	    
+	    //Get task
+	    Task task = taskRepository.findById(taskId)
+	            .orElseThrow(() -> new TaskNotFoundException(
+	                    String.format("Task Id %d not found", taskId)));
+	    
+	    System.out.println("TASK OWNER ID: " + task.getUsers().getId());
+	    //SECURITY CHECK (VERY IMPORTANT 🔥)
+	    if (!task.getUsers().getId().equals(user.getId())) {
+	        throw new APIException(
+	                String.format("Task Id %d does not belong to logged-in user", taskId));
+	    }
+
+	    //Update fields
+	    task.setTaskname(taskDTO.getTaskname());
+
+	    //Save
+	    Task updatedTask = taskRepository.save(task);
+
+	    // Return DTO
+	    return modelMapper.map(updatedTask, TaskDTO.class);
 	}
 
 }

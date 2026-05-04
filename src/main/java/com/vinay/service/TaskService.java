@@ -10,4 +10,5 @@ public interface TaskService {
 	public List<TaskDTO> getAllTasks(long userId);
 	public TaskDTO getTask(long userId, long taskid);
 	public void deleteTask(long userId, long taskid);
+	public TaskDTO updateTask(long userId, long taskId, TaskDTO taskDTO);
 }

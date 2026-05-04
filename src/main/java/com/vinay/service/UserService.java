@@ -1,13 +1,16 @@
 package com.vinay.service;
 
+import java.util.Map;
+
 import com.vinay.dto.LogInDTO;
 import com.vinay.dto.UsersDTO;
+import com.vinay.payload.ApiResponse;
 
 public interface UserService {
 
-	UsersDTO createUser(UsersDTO usersDto);
+	ApiResponse<Map<String, Object>> createUser(UsersDTO usersDto);
 
-	String verify(LogInDTO logInDTO);
+	ApiResponse<Map<String, Object>> verify(LogInDTO logInDTO);
 
 	
 }
