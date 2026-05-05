@@ -4,15 +4,15 @@ import { Link, useLocation } from 'react-router-dom';
 const HeaderComponent = () => {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const location = useLocation(); // ✅ THIS FIXES YOUR ISSUE
+  const location = useLocation(); //THIS FIXES YOUR ISSUE
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsAuthenticated(!!token);
-  }, [location]); // ✅ re-runs on route change
+  }, [location]); // re-runs on route change
 
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.clear();
     window.location.href = "/login"; // simple & fine
   };
 

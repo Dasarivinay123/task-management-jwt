@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 const TaskList = () => {
 
     const [tasks, setTasks] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+
     const navigate = useNavigate();
     const userId = 1;
 
@@ -40,12 +42,22 @@ const TaskList = () => {
     const handleUpdate = (task) => {
         navigate(`/edit-task/${task.id}`);
     };
+    const getFilteredTasks = (taskList) => {
+        return taskList.filter(task =>
+            task.taskname.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    };
     return (
-      <div className="container mt-4" style={{ paddingBottom: "70px" }}>
+        <div className="container mt-4" style={{ paddingBottom: "70px" }}>
             <h2 className="text-center">My Tasks</h2>
             <div className="d-flex justify-content-between align-items-center mb-3">
-                <h2>My Tasks</h2>
-
+                <input
+                    type="text"
+                    placeholder="Search tasks..."
+                    className="form-control w-25 mb-3"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
                 <button
                     className="btn btn-primary"
                     onClick={() => navigate("/add-task")}
@@ -63,7 +75,9 @@ const TaskList = () => {
                 </thead>
 
                 <tbody>
-                    {tasks.map((task) => (
+                    {getFilteredTasks(tasks).length === 0 ? (
+                        <tr><td colSpan="3">No tasks found</td></tr>
+                    ) : (getFilteredTasks(tasks).map((task) => (
                         <tr key={task.id}>
                             <td>{task.id}</td>
                             <td>{task.taskname}</td>
@@ -86,7 +100,7 @@ const TaskList = () => {
                                 </div>
                             </td>
                         </tr>
-                    ))}
+                    )))}
                 </tbody>
             </table>
         </div>
