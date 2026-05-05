@@ -9,6 +9,7 @@ This is the frontend of the Task Management System built using React. It allows 
 * User Registration & Login
 * JWT-based Authentication
 * Create, Update, Delete Tasks
+* * Real-time Search & Filtering of Tasks (Client-side filtering using React state)
 * Protected Routes
 * Responsive UI using Bootstrap
 
